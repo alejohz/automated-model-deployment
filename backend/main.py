@@ -9,7 +9,7 @@ from textblob import TextBlob
 load_dotenv()
 
 # This app was deployed in glitch
-# Url: https://roomy-angry-trapezoid.glitch.me/
+# Url: https://unexpected-second-stomach.glitch.me/
 DB_USER = "aeiwtyxk"
 DB_NAME = "aeiwtyxk"
 DB_PASSWORD = os.getenv("DB_PASSWORD")
