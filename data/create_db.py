@@ -32,7 +32,7 @@ filename = wget.download(url, out="data/")
 
 ### load the data
 data = []
-with gzip.open("data/Gift_Cards.json.gz") as f:
+with gzip.open("Gift_Cards.json.gz") as f:
     for line in f:
         data.append(json.loads(line.strip()))
 
