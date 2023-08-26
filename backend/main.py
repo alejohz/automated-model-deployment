@@ -30,7 +30,7 @@ async def root() -> Dict:
     return {"message": "Hello World"}
 
 
-@app.get("predict/{asin}")
+@app.get("/predict/{asin}")
 def predict(asin: str) -> List[str]:
     connection = get_connection() # Get connection
     query = f"SELECT * FROM raw.reviews WHERE asin = '{asin}'" # SQL query
