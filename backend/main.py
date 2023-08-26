@@ -5,6 +5,7 @@ import sqlalchemy
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from textblob import TextBlob
+from typing import List, Dict
 
 load_dotenv()
 
@@ -25,12 +26,12 @@ def get_connection() -> sqlalchemy.engine.base.Connection:
 app = FastAPI() # Create FastAPI instance
 
 @app.get("/")
-async def root() -> dict:
+async def root() -> Dict:
     return {"message": "Hello World"}
 
 
 @app.get("predict/{asin}")
-def predict(asin: str) -> list[str]:
+def predict(asin: str) -> List[str]:
     connection = get_connection() # Get connection
     query = f"SELECT * FROM raw.reviews WHERE asin = '{asin}'" # SQL query
     # Read only first 5 for simplicity
