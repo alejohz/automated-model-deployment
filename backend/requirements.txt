@@ -1,2 +1,7 @@
 fastapi
 uvicorn
+textblob
+pandas
+sqlalchemy
+psycopg2
+python-dotenv
