@@ -30,20 +30,25 @@ async def root() -> dict:
 
 
 @app.get("predict/{asin}")
-def predict(asin: str) -> str:
+def predict(asin: str) -> list[str]:
     connection = get_connection() # Get connection
-    query = f"SELECT * FROM reviews WHERE asin = '{asin}'" # SQL query
-    # Create a TextBlob object
-    blob = TextBlob(pd.read_sql(query, connection).reviewText.values[0])
-
-    # Perform sentiment analysis
-    sentiment_score = blob.sentiment.polarity
-
-    # Determine sentiment label
-    if sentiment_score > 0:
-        sentiment_label = "Positive"
-    elif sentiment_score < 0:
-        sentiment_label = "Negative"
-    else:
-        sentiment_label = "Neutral"
-    return sentiment_label
+    query = f"SELECT * FROM raw.reviews WHERE asin = '{asin}'" # SQL query
+    # Read only first 5 for simplicity
+    reviews = pd.read_sql(query, connection).reviewText.values[:5]
+    if reviews.size == 0:
+        return ["No reviews found"]
+    sentiments = []
+    for review in reviews:  # Iterate over reviews
+        # Create a TextBlob object
+        blob = TextBlob(review)
+        # Perform sentiment analysis
+        sentiment_score = blob.sentiment.polarity
+        # Determine sentiment label
+        if sentiment_score > 0:
+            sentiment_label = "Positive"
+        elif sentiment_score < 0:
+            sentiment_label = "Negative"
+        else:
+            sentiment_label = "Neutral"
+        sentiments.append(sentiment_label)
+    return sentiments
