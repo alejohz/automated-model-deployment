@@ -36,14 +36,12 @@ with gzip.open("Gift_Cards.json.gz") as f:
     for line in f:
         data.append(json.loads(line.strip()))
 
-
+selected_cols = ["summary", "reviewText", "asin", "reviewerID"]
 df = (
-    pd.DataFrame.from_dict(data).dropna(  # read from dictionary
-        subset=["reviewText", "asin", "reviewerID"]
-    )
+    pd.DataFrame.from_dict(data).dropna(subset=selected_cols)  # read from dictionary
     # remove rows with empty reviewText
 )[
-    ["asin", "reviewerID", "reviewText"]
+    selected_cols
 ]  # select only id and text
 
 # create the database
