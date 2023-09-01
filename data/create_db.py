@@ -27,8 +27,8 @@ engine = get_connection()  # create engine
 
 # This dataset is extracted from the amazon reviews dataset
 # This is only the gift cards category
-url = "https://datarepo.eng.ucsd.edu/mcauley_group/data/amazon_v2/categoryFiles/Gift_Cards.json.gz"
-filename = wget.download(url, out="data/")
+# url = "https://datarepo.eng.ucsd.edu/mcauley_group/data/amazon_v2/categoryFiles/Gift_Cards.json.gz"
+# filename = wget.download(url, out="data/")
 
 ### load the data
 data = []
@@ -36,7 +36,7 @@ with gzip.open("Gift_Cards.json.gz") as f:
     for line in f:
         data.append(json.loads(line.strip()))
 
-selected_cols = ["summary", "reviewText", "asin", "reviewerID"]
+selected_cols = ["summary", "reviewText", "asin"]
 df = (
     pd.DataFrame.from_dict(data).dropna(subset=selected_cols)  # read from dictionary
     # remove rows with empty reviewText
@@ -46,4 +46,5 @@ df = (
 
 # create the database
 with engine.connect() as conn:
+    conn.execute(statement=sqlalchemy.text("GRANT ALL ON SCHEMA raw TO aeiwtyxk;"))
     df.to_sql("reviews", conn, schema="raw", if_exists="replace", index=False)
